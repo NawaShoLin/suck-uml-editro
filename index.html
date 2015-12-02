@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+    <script src="js/lib/fabric.min.js"></script>
+    <script src="js/uml-node-port.js"></script>
+    <script src="js/uml-link.js"></script>
+    <script src="js/uml-node.js"></script>
+    <script src="js/class-object.js"></script>
+    <script src="js/use-case.js"></script>
+    <script src="js/uml-editor.js"></script>
+
+    <style>
+        .black-btn {
+            background: #666;
+        }
+
+        .white-btn {
+            background: #EEE;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id="suck-ypc" width="800" height="600">
+
+</canvas>
+<div id="fn-btn-area">
+    <button onclick="enterMode('select')" id="select">Select</button>
+    <button onclick="enterMode('createClass')" id="createClass">Create Class</button>
+    <button onclick="enterMode('createUseCase')" id="createUseCase">Create Use Case</button>
+    <button onclick="enterMode('associationLine')" id="associationLine">Association Line</button>
+    <button onclick="enterMode('generalizationLine')" id="generalizationLine">Generalization Line</button>
+    <button onclick="enterMode('compositionLine')" id="compositionLine">Composition Line</button>
+    <button onclick="enterMode('group')" id="group">Group</button>
+
+    <button onclick="rename()">Rename</button>
+</div>
+<script>
+
+    var canvas = new fabric.Canvas('suck-ypc');
+    var editor = UmlEditor(canvas);
+    editor.init();
+
+    var enterMode = function(modeName) {
+        editor.switchState(modeName);
+
+        var btns = document.getElementsByTagName('button');
+        for (var i = 0; i < btns.length; i += 1) {
+            btns[i].className = "";
+        }
+
+        document.getElementById(modeName).className = 'black-btn';
+    };
+
+    var rename = function() {
+        if (editor.state === editor.states['select'])
+        var name = prompt("Rename:", "");
+
+        if (name) {
+            editor.rename(name);
+        }
+    };
+    /*
+    canvas.setBackgroundColor('#FEE');
+    var co = ClassObject();
+    co.base.setLeft(100);
+
+    canvas.add(co.base);
+    */
+</script>
+</body>
+</html>
