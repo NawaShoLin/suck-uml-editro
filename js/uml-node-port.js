@@ -1,24 +1,25 @@
 var UmlNodePort = (function() {
     'use strict';
-    var UmlNodePort = function(pos, parent) {
-        var x = pos.x;
-        var y = pos.y;
-
-        var port = { parent: parent };
-        var radius = 12;
-        var strokeWidth = 4;
-
-        port.icon = new fabric.Circle({
+    let makeIcon = (x, y, radius) => {
+        return new fabric.Circle({
             left: x - radius,
             top: y - radius,
-            strokeWidth: strokeWidth,
+            strokeWidth: 4,
             radius: radius,
             fill: '#fff',
             stroke: '#666'
-        });
+        })
+    };
 
-        port.getPos = function() {
-            let portPos = port.icon.getCenterPoint();
+    return (pos, parent) => {
+        let self = { parent: parent };
+
+        let init = () => {
+            self.icon = makeIcon(pos.x, pos.y, 12)
+        };
+
+        self.getPos = () => {
+            let portPos = self.icon.getCenterPoint();
             let parentPos = parent.getPos();
             return {
                 x: parentPos.x + portPos.x,
@@ -26,8 +27,15 @@ var UmlNodePort = (function() {
             };
         };
 
-        return port;
-    };
+        self.hide = () => {
+            self.icon.setVisible(false);
+        };
 
-    return UmlNodePort;
+        self.show = () => {
+            self.icon.setVisible(true);
+        };
+
+        init();
+        return self;
+    };
 })();

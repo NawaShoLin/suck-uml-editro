@@ -8,20 +8,20 @@ var UmlNode = (function() {
         return dx * dx + dy * dy;
     };
 
-    var UmlNode = function(baseObject) {
+    return (baseObject) => {
         let node = {};
 
-        let init = function() {
+        let init = () => {
             node.base = baseObject;
             node.links = [];
-            node.giveName("GGG");
+            node.giveName("");
 
             node.createPorts();
             node.hidePorts();
             node.disableSelect();
         };
 
-        node.createPorts = function() {
+        node.createPorts = () => {
             let base = node.base;
 
             // radius of base object
@@ -39,14 +39,12 @@ var UmlNode = (function() {
             node.ports.forEach(port => base.add(port.icon));
         };
 
-        node.hidePorts = function() {
-            node.ports.forEach(p =>
-                p.icon.setVisible(false));
+        node.hidePorts = () => {
+            node.ports.forEach(p => p.hide());
         };
 
-        node.showPorts = function() {
-            node.ports.forEach(p =>
-                p.icon.setVisible(true));
+        node.showPorts = () => {
+            node.ports.forEach(p => p.show());
         };
 
         node.getClosestPort = (pos) => {
@@ -72,25 +70,15 @@ var UmlNode = (function() {
             return node.base.getCenterPoint();
         };
 
-        var updateLinks = function() {
-            node.links.forEach(function(link) {
-                link.update();
-            });
-        };
-
-        baseObject.on('moving', function() {
-            console.log('moving!');
-        });
-
-        node.on = function(evn, callback) {
+        node.on = (evn, callback) => {
             node.base.on(evn, callback);
         };
 
-        node.enableSelect = function() {
+        node.enableSelect = () => {
             node.base.set('selectable', true);
         };
 
-        node.disableSelect = function() {
+        node.disableSelect = () => {
             node.base.set('selectable', false);
         };
 
@@ -109,10 +97,7 @@ var UmlNode = (function() {
             node.giveName(name);
         };
 
-
         init();
         return node;
     };
-
-    return UmlNode;
 })();

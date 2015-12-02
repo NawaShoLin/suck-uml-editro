@@ -1,52 +1,54 @@
 var ClassObject = (function () {
     'use strict';
-    var makeLine = function(coordinates) {
-        return new fabric.Line(coordinates, {
+    let makeLine = function(coordinates) {
+        let defaultStyle = {
             fill: '#000',
             stroke: '#000',
             strokeWidth: 2,
             selectable: false
-        });
+        };
+
+        return new fabric.Line(coordinates, defaultStyle);
     };
 
-    var makeLines = function(positions) {
-        var lines = [];
-        for (var i = 0; i < positions.length; i += 1) {
-            lines.push(makeLine(positions[i]));
-        }
-
-        return lines;
+    /**
+     * @param {Array} positions - list of line-coordinates
+     * @returns {Array} new lines
+     */
+    let makeLines = (positions) => {
+        return positions.map(makeLine);
     };
 
-    var genLinePositions = function(rect) {
+    let genLinePositions = (rect) => {
         //  ----a----
         //  |---e---|
         //  b       c
         //  |---f---|
         //  ----d----
-        var x1 = rect.getLeft();
-        var x2 = x1 + rect.getWidth();
-        var y1 = rect.getTop();
-        var y2 = y1 + rect.getHeight();
+        let x1 = rect.getLeft();
+        let x2 = x1 + rect.getWidth();
+        let y1 = rect.getTop();
+        let y2 = y1 + rect.getHeight();
 
-        var yE = y1 + (1/3) * rect.getHeight();
-        var yF = y1 + (2/3) * rect.getHeight();
+        let yE = y1 + (1/3) * rect.getHeight();
+        let yF = y1 + (2/3) * rect.getHeight();
 
-        var a = [x1, y1, x2, y1];
-        var b = [x1, y1, x1, y2];
-        var c = [x2, y1, x2, y2];
-        var d = [x1, y2, x2, y2];
-        var e = [x1, yE, x2, yE];
-        var f = [x1, yF, x2, yF];
+        let a = [x1, y1, x2, y1];
+        let b = [x1, y1, x1, y2];
+        let c = [x2, y1, x2, y2];
+        let d = [x1, y2, x2, y2];
+        let e = [x1, yE, x2, yE];
+        let f = [x1, yF, x2, yF];
 
         return [a, b, c, d, e, f];
     };
 
-    var ClassObject = function(width, height) {
+    let makeClassGraph = (width, height) => {
+        let defaultSize = 100;
+        width = width || defaultSize;
+        height = height || defaultSize;
 
-        width = width || 100;
-        height = height || 100;
-        var baseRect = new fabric.Rect({
+        let rect = new fabric.Rect({
             top:0, left:0,
             width: width,
             height: height,
@@ -54,17 +56,15 @@ var ClassObject = (function () {
             opacity: 1
         });
 
-        var objs = [baseRect];
-        var lines = makeLines(genLinePositions(baseRect));
-        lines.forEach(function(e) {
-            objs.push(e);
-        });
+        let objects = [rect];
+        let lines = makeLines(genLinePositions(rect));
+        lines.forEach(e => objects.push(e));
 
-        var base = new fabric.Group(objs);
-
-        return UmlNode(base);
+        return new fabric.Group(objects);
     };
 
-
-    return ClassObject;
+    // constructor
+    return (width, height) => {
+        return UmlNode(makeClassGraph(width, height));
+    };
 })();

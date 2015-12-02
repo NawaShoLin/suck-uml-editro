@@ -13,10 +13,6 @@
         .black-btn {
             background: #666;
         }
-
-        .white-btn {
-            background: #EEE;
-        }
     </style>
 </head>
 
@@ -26,7 +22,9 @@
 </canvas>
 <div id="fn-btn-area">
     <button onclick="enterMode('select')" id="select">Select</button>
-    <button onclick="enterMode('createClass')" id="createClass">Create Class</button>
+    <button onclick="enterMode('createClass')" id="createClass" class="black-btn">
+        Create Class
+    </button>
     <button onclick="enterMode('createUseCase')" id="createUseCase">Create Use Case</button>
     <button onclick="enterMode('associationLine')" id="associationLine">Association Line</button>
     <button onclick="enterMode('generalizationLine')" id="generalizationLine">Generalization Line</button>
@@ -60,13 +58,6 @@
             editor.rename(name);
         }
     };
-    /*
-    canvas.setBackgroundColor('#FEE');
-    var co = ClassObject();
-    co.base.setLeft(100);
-
-    canvas.add(co.base);
-    */
 </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 var UseCase = (function() {
     'use strict';
 
-    let UseCase = (radius) => {
+    let makeCircle = (radius) => {
         radius = radius || 50;
         let circle = new fabric.Circle({
             radius: radius,
@@ -10,9 +10,10 @@ var UseCase = (function() {
             strokeWidth: 4
         });
 
-        let base = new fabric.Group([circle]);
-        return UmlNode(base);
+        return new fabric.Group([circle]);
     };
 
-    return UseCase;
+    return (radius) => {
+        return UmlNode(makeCircle(radius));
+    };
 })();

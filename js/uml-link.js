@@ -9,49 +9,59 @@ var UmlLink = (function() {
         })
     };
 
-    var UmlLink = function (fromPort, toPort, canvas, iconGen) {
+    return (fromPort, toPort, canvas, iconGen) => {
         if (fromPort === toPort) {
             return null;
         }
 
         let endIcon = iconGen();
 
-        var link = { fromPort: fromPort, toPort:toPort };
-        link.update = function() {
-            link.line.set({
+        let self = { fromPort: fromPort, toPort:toPort };
+
+        let init = () => {
+            self.endIcon = endIcon;
+            self.line = makeLine([0,0,0,0]);
+            self.update();
+
+            canvas.add(self.line);
+            if (self.endIcon) {
+                canvas.add(endIcon);
+            }
+        };
+
+        let updateLine = () => {
+            self.line.set({
                 x1: fromPort.getPos().x,
                 y1: fromPort.getPos().y,
                 x2: toPort.getPos().x,
                 y2: toPort.getPos().y
             });
+        };
 
-            if (link.endIcon) {
-                endIcon.setLeft(toPort.getPos().x - 4);
-                endIcon.setTop(toPort.getPos().y - 4);
+        let updateEndIcon = () => {
+            let icon = self.endIcon;
+            if (icon) {
+                icon.setLeft(toPort.getPos().x - 4);
+                icon.setTop(toPort.getPos().y - 4);
             }
         };
 
-        link.endIcon = endIcon;
-        link.line = makeLine([0,0,0,0]);
-        link.update();
-
-        canvas.add(link.line);
-        if (link.endIcon) {
-            canvas.add(endIcon);
-        }
-
-        link.hide = () => {
-            link.line.set('visible', false);
-            link.endIcon && link.endIcon.set('visible', false);
+        self.update = () => {
+            updateLine();
+            updateEndIcon();
         };
 
-        link.show = () => {
-            link.line.set('visible', true);
-            link.endIcon && link.endIcon.set('visible', true);
+        self.hide = () => {
+            self.line.set('visible', false);
+            self.endIcon && self.endIcon.set('visible', false);
         };
 
-        return link;
+        self.show = () => {
+            self.line.set('visible', true);
+            self.endIcon && self.endIcon.set('visible', true);
+        };
+
+        init();
+        return self;
     };
-
-    return UmlLink;
 })();

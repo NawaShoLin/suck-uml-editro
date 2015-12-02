@@ -1,7 +1,7 @@
 var UmlEditor = (function() {
     'use strict';
-    var BaseState = function(editor) {
-        var s = { editor: editor };
+    let BaseState = function(editor) {
+        let s = { editor: editor };
 
         let handlers = [
             'enterState', 'exitState',
@@ -20,8 +20,8 @@ var UmlEditor = (function() {
         return s;
     };
 
-    var CreateClassState = function(editor) {
-        var s = BaseState(editor);
+    let CreateClassState = function(editor) {
+        let s = BaseState(editor);
 
         s.mouseDown = (opt) => {
             var pos = s.getPos(opt);
@@ -31,8 +31,8 @@ var UmlEditor = (function() {
         return s;
     };
 
-    var CreateUseCase = (editor) => {
-        var s = BaseState(editor);
+    let CreateUseCase = (editor) => {
+        let s = BaseState(editor);
 
         s.mouseDown = (opt) => {
             var pos = s.getPos(opt);
@@ -42,7 +42,7 @@ var UmlEditor = (function() {
         return s;
     };
 
-    var SelectState = function(editor) {
+    let SelectState = function(editor) {
         let s = BaseState(editor);
 
         s.enterState = () => {
@@ -76,8 +76,7 @@ var UmlEditor = (function() {
         return s;
     };
 
-    var LinkMode = (editor, endIcon) => {
-
+    let LinkMode = (editor, endIcon) => {
         let s = BaseState(editor);
         let fromEvn = null;
 
@@ -108,24 +107,24 @@ var UmlEditor = (function() {
     };
 
 
-    var AssociationLine = (editor) => {
+    let AssociationLine = (editor) => {
         return LinkMode(editor, () => null);
     };
 
-    var GeneralizationLine = (editor) => {
+    let GeneralizationLine = (editor) => {
         return LinkMode(editor, () => {
-            return new fabric.Triangle({ width: 8, height: 8, fill: '#000'});
+            return new fabric.Triangle({ width: 16, height: 16, fill: '#000'});
         });
     };
 
-    var CompositionLine = (editor) => {
+    let CompositionLine = (editor) => {
         return LinkMode(editor, () => {
             return new fabric.Rect({width:16, height:16,
                 fill:'#000', angle: 45});
         });
     };
 
-    var Group = (editor) => {
+    let Group = (editor) => {
         let s = BaseState(editor);
 
         s.enterState = () => {
@@ -157,10 +156,10 @@ var UmlEditor = (function() {
         });
     };
 
-    var UmlEditor = function(canvas) {
-        var editor = { canvas: canvas };
+    return (canvas) => {
+        let editor = { canvas: canvas };
 
-        var states = {
+        let states = {
             'base': BaseState(editor),
             'createClass': CreateClassState(editor),
             'createUseCase': CreateUseCase(editor),
@@ -199,10 +198,10 @@ var UmlEditor = (function() {
 
 
         editor.createClassObject = function(pos) {
-            var node = ClassObject();
+            let node = ClassObject();
             editor.nodes.push(node);
 
-            var obj = node.base;
+            let obj = node.base;
             obj.setLeft(pos.x);
             obj.setTop(pos.y);
             obj.set('selectable', false);
@@ -211,10 +210,10 @@ var UmlEditor = (function() {
         };
 
         editor.createUseCase = function(pos) {
-            var node = UseCase();
+            let node = UseCase();
             editor.nodes.push(node);
 
-            var obj = node.base;
+            let obj = node.base;
             obj.setLeft(pos.x);
             obj.setTop(pos.y);
             obj.set('selectable', false);
@@ -248,6 +247,4 @@ var UmlEditor = (function() {
 
         return editor;
     };
-
-    return UmlEditor;
 })();
